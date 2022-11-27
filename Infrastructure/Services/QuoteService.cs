@@ -19,9 +19,11 @@ public class QuoteService
             using (var conn = new NpgsqlConnection(_connectionString))
             {
                 var sql =
-                    $"insert into Quotes (Author, QuoteText) VALUES " +
+                    $"insert into Quotes (Author, QuoteText,Categoryid) VALUES " +
                     $"('{Quotes.Author}', " +
-                    $"'{Quotes.QuoteText}') ";
+                    $"'{Quotes.QuoteText}', " +
+                   $"'{Quotes.Categoryid}')"; 
+
                 var result = conn.Execute(sql);
 
                 return result;
@@ -35,7 +37,8 @@ public class QuoteService
                 var sql = 
                     $"UPDATE Quotes SET " +
                     $"Author = '{Quotes.Author}', " +
-                    $"QuoteText = '{Quotes.QuoteText}' " +
+                    $"QuoteText = '{Quotes.QuoteText}', " +
+                    $"Categoryid = {Quotes.Categoryid} " +
                     $"WHERE id = {Quotes.id}";
 
                 var result = conn.Execute(sql);
@@ -64,14 +67,14 @@ public class QuoteService
             return conn.Query<Quotes>(sql).ToList();
         }
     }
-        public Quotes GetById(int id)
+        public List<Quotes> GetQuotesByCategory(int id)
     {
        using (var conn = new NpgsqlConnection(_connectionString))
         {
             var sql = 
-            $"Select categoryname from Category where id = {id}";  
+            $"Select * from quotes where categoryid = {id}";  
             
-            return conn.QuerySingleOrDefault<Quotes>(sql, new {id});
+            return conn.Query<Quotes>(sql, new {id}).ToList();
         }
     }
 

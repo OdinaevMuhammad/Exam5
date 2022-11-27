@@ -44,9 +44,9 @@ namespace WebApi.Controllers
             return _QuotesService.DeleteQuotes(id);
         }         
                   [HttpGet("GetById")]
-        public Quotes GetById(int id)
+        public List<Quotes> GetById(int id)
         {
-            return _QuotesService.GetById(id);
+            return _QuotesService.GetQuotesByCategory(id);
         }    
         
     }
